@@ -1,24 +1,52 @@
 {
-  "name": "nextjs-base",
+  "name": "change_me",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "biome format .",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.7.0",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@t3-oss/env-nextjs": "^0.11.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "drizzle-orm": "^0.34.1",
+    "lucide-react": "^0.452.0",
+    "next": "14.2.15",
+    "next-auth": "5.0.0-beta.22",
+    "nextjs-toploader": "^3.7.15",
+    "postgres": "^3.4.4",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.15"
+    "tailwind-merge": "^2.5.3",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8",
+    "zsa": "^0.6.0",
+    "zsa-openapi": "^0.3.1",
+    "zsa-react": "^0.2.3"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
+    "@biomejs/biome": "^1.9.3",
+    "@total-typescript/ts-reset": "^0.6.1",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "biome": "^0.3.3",
+    "drizzle-kit": "^0.25.0",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1"
-  }
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@9.12.1+sha256.91452fdfa46234ae447d46d5c4fc4e7e0a7058f90495c4b6f77f8beebbb154e3"
 }
