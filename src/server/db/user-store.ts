@@ -1,9 +1,11 @@
 import { db } from '.'
 
-export default {
+const userStore = {
   async getById(id: string) {
     return db.query.users.findFirst({
       where: (user, { eq }) => eq(user.id, id),
     })
   },
 }
+
+export default userStore

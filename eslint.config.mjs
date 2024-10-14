@@ -1,169 +1,42 @@
-import { fixupPluginRules } from '@eslint/compat'
-import js from '@eslint/js'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import eslint from '@eslint/js'
+import tseslint from 'typescript-eslint'
 
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import globals from 'globals'
-import ts from 'typescript-eslint'
+import { FlatCompat } from '@eslint/eslintrc'
+import { fixupConfigRules } from '@eslint/compat'
 
-const excludeSpecialNamesFilter = {
-  regex: 'aria-|Component|\\.|Story',
-  match: false,
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const recommendedConfig = {
+  ...eslint.configs.recommended,
+  ...tseslint.configs.recommended,
 }
 
-// noinspection JSUnusedGlobalSymbols
-export default [
-  {
-    ignores: ['**/eslint.config.mjs', '**/postcss.config.mjs'],
-  },
-  js.configs.recommended,
-  ...ts.configs.recommendedTypeChecked,
-  ...ts.configs.stylisticTypeChecked,
-  react.configs.flat.recommended,
-  react.configs.flat['jsx-runtime'],
-  jsxA11y.flatConfigs.recommended,
+const allConfig = {
+  ...eslint.configs.all,
+  ...tseslint.configs.all,
+}
 
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: recommendedConfig,
+  allConfig: allConfig,
+})
+
+const fullConfig = tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  ...compat.extends('next/core-web-vitals'),
   {
-    plugins: {
-      'react-hooks': fixupPluginRules(reactHooks),
-    },
     rules: {
-      ...reactHooks.configs.recommended.rules,
+      '@next/next/no-img-element': 'off',
     },
   },
   {
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.es2022,
-      },
-
-      sourceType: 'module',
-
-      parserOptions: {
-        project: ['./tsconfig.json'],
-        tsconfigRootDir: './',
-      },
-    },
-
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
-
-    rules: {
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_',
-        },
-      ],
-
-      '@typescript-eslint/unbound-method': 'off',
-      '@typescript-eslint/no-base-to-string': 'off',
-      '@typescript-eslint/no-empty-object-type': 'warn',
-
-      '@typescript-eslint/consistent-type-imports': [
-        'warn',
-        {
-          prefer: 'type-imports',
-          fixStyle: 'inline-type-imports',
-        },
-      ],
-
-      '@typescript-eslint/prefer-nullish-coalescing': [
-        'error',
-        {
-          ignorePrimitives: {
-            string: true,
-            boolean: true,
-          },
-        },
-      ],
-
-      'react/no-unescaped-entities': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
-
-      '@typescript-eslint/no-misused-promises': [
-        'error',
-        {
-          checksVoidReturn: {
-            arguments: false,
-            attributes: false,
-          },
-        },
-      ],
-
-      '@typescript-eslint/naming-convention': [
-        'warn',
-        {
-          selector: 'default',
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
-          filter: excludeSpecialNamesFilter,
-        },
-
-        {
-          selector: 'property',
-          format: ['camelCase', 'PascalCase', 'UPPER_CASE', 'snake_case'],
-          filter: excludeSpecialNamesFilter,
-        },
-
-        {
-          selector: 'property',
-          format: ['camelCase'],
-          leadingUnderscore: 'require',
-          modifiers: ['private'],
-          filter: {
-            regex: '^\\$$',
-            match: false,
-          },
-        },
-
-        {
-          selector: 'objectLiteralProperty',
-          format: null,
-        },
-
-        {
-          selector: 'enumMember',
-          format: ['PascalCase'],
-        },
-
-        {
-          selector: 'function',
-          format: ['camelCase', 'PascalCase'],
-        },
-
-        {
-          selector: 'import',
-          format: ['camelCase', 'PascalCase'],
-        },
-
-        {
-          selector: 'variable',
-          format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
-          leadingUnderscore: 'allow',
-        },
-
-        {
-          selector: 'typeLike',
-          format: ['PascalCase'],
-        },
-      ],
-    },
+    ignores: ['.next/**/*'],
   },
-  {
-    files: ['src/**/*.test.ts'],
+)
 
-    rules: {
-      '@typescript-eslint/no-floating-promises': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off',
-      '@typescript-eslint/require-await': 'off',
-    },
-  },
-]
+export default fixupConfigRules(fullConfig)

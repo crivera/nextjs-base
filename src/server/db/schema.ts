@@ -19,8 +19,6 @@ import { Role } from '~/lib/consts'
  */
 export const createTable = pgTableCreator((name) => `change_me_${name}`)
 
-type DBIngredient = { amount: number; unit: string; name: string }
-
 const dateColumns = {
   createdAt: timestamp('created_at', { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
