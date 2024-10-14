@@ -36,14 +36,28 @@
     "zsa-react": "^0.2.3"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.0",
+    "@eslint/js": "^9.12.0",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "drizzle-kit": "^0.25.0",
+    "eslint": "^9.12.0",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "eslint-plugin-react": "^7.37.1",
+    "eslint-plugin-react-hooks": "^5.0.0",
     "postcss": "^8",
+    "prettier": "^3.3.3",
     "tailwindcss": "^3.4.13",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.8.1"
   },
-  "packageManager": "pnpm@9.12.1+sha256.91452fdfa46234ae447d46d5c4fc4e7e0a7058f90495c4b6f77f8beebbb154e3"
+  "packageManager": "pnpm@9.12.1+sha256.91452fdfa46234ae447d46d5c4fc4e7e0a7058f90495c4b6f77f8beebbb154e3",
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "arrowParens": "always",
+    "trailingComma": "all"
+  }
 }
