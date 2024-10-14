@@ -34,7 +34,10 @@ CREATE TABLE IF NOT EXISTS "change_me_user" (
 	"email" text,
 	"emailVerified" timestamp,
 	"image" text,
-	CONSTRAINT "change_me_user_email_unique" UNIQUE("email")
+	"role" integer DEFAULT 3,
+	"phone" text,
+	CONSTRAINT "change_me_user_email_unique" UNIQUE("email"),
+	CONSTRAINT "change_me_user_phone_unique" UNIQUE("phone")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "change_me_verificationToken" (

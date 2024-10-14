@@ -9,11 +9,11 @@ import {
 	CardContent,
 	CardFooter,
 } from "~/app/_components/ui/card";
-import { loginWithGoogle } from "~/server/routes/auth";
+import { loginWithGoogle } from "~/server/routes/login";
 
 export default function Component() {
 	return (
-		<div className="flex items-center justify-center bg-gray-100">
+		<main className="flex flex-1 px-6 py-12 justify-center items-center">
 			<Card className="w-full max-w-md">
 				<CardHeader className="text-center">
 					<CardTitle className="text-2xl font-bold">Welcome</CardTitle>
@@ -54,6 +54,6 @@ export default function Component() {
 					By signing in, you agree to our Terms of Service and Privacy Policy
 				</CardFooter>
 			</Card>
-		</div>
+		</main>
 	);
 }

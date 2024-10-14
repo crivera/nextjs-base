@@ -1,3 +1,3 @@
-import { handlers } from "~/server/auth"
+import { handlers } from "~/server/authentication";
 
-export const { GET, POST } = handlers
+export const { GET, POST } = handlers;
