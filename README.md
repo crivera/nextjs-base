@@ -7,7 +7,7 @@ Uses
 - Next JS
 - Tailwind CSS
 - TypeScript
-- Biome (ESLint has been annoying as hell since the upgrade to v9)
+- ESLint
 - ZSA for Server Actions
 - Shadcn for UI Components
 - Next Auth

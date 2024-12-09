@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "change_me_account" (
+CREATE TABLE "change_me_account" (
 	"userId" text NOT NULL,
 	"type" text NOT NULL,
 	"provider" text NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "change_me_account" (
 	CONSTRAINT "change_me_account_provider_providerAccountId_pk" PRIMARY KEY("provider","providerAccountId")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "change_me_authenticator" (
+CREATE TABLE "change_me_authenticator" (
 	"credentialID" text NOT NULL,
 	"userId" text NOT NULL,
 	"providerAccountId" text NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "change_me_authenticator" (
 	CONSTRAINT "change_me_authenticator_credentialID_unique" UNIQUE("credentialID")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "change_me_user" (
+CREATE TABLE "change_me_user" (
 	"id" text PRIMARY KEY NOT NULL,
 	"created_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -34,27 +34,18 @@ CREATE TABLE IF NOT EXISTS "change_me_user" (
 	"email" text,
 	"emailVerified" timestamp,
 	"image" text,
-	"role" integer DEFAULT 3,
+	"role" integer DEFAULT 3 NOT NULL,
 	"phone" text,
 	CONSTRAINT "change_me_user_email_unique" UNIQUE("email"),
 	CONSTRAINT "change_me_user_phone_unique" UNIQUE("phone")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "change_me_verificationToken" (
+CREATE TABLE "change_me_verificationToken" (
 	"identifier" text NOT NULL,
 	"token" text NOT NULL,
 	"expires" timestamp NOT NULL,
 	CONSTRAINT "change_me_verificationToken_identifier_token_pk" PRIMARY KEY("identifier","token")
 );
 --> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "change_me_account" ADD CONSTRAINT "change_me_account_userId_change_me_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."change_me_user"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "change_me_authenticator" ADD CONSTRAINT "change_me_authenticator_userId_change_me_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."change_me_user"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ALTER TABLE "change_me_account" ADD CONSTRAINT "change_me_account_userId_change_me_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."change_me_user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "change_me_authenticator" ADD CONSTRAINT "change_me_authenticator_userId_change_me_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."change_me_user"("id") ON DELETE cascade ON UPDATE no action;

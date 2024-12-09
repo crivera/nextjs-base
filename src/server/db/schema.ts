@@ -42,7 +42,7 @@ export const users = createTable('user', {
   email: text('email').unique(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
-  role: integer('role').default(Role.USER),
+  role: integer('role').default(Role.USER).notNull(),
   phone: text('phone').unique(),
 })
 

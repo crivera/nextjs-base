@@ -1,5 +1,5 @@
 {
-  "id": "e6150fd7-f380-4402-80e1-b30788a2e7ed",
+  "id": "8678969a-9a22-44b0-8abd-6b97ce025ec5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -100,7 +100,10 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.change_me_authenticator": {
       "name": "change_me_authenticator",
@@ -188,7 +191,10 @@
             "credentialID"
           ]
         }
-      }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.change_me_user": {
       "name": "change_me_user",
@@ -242,7 +248,7 @@
           "name": "role",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": 3
         },
         "phone": {
@@ -270,7 +276,10 @@
             "phone"
           ]
         }
-      }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.change_me_verificationToken": {
       "name": "change_me_verificationToken",
@@ -306,12 +315,18 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {},
   "schemas": {},
   "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},
