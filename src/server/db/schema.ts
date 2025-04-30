@@ -17,7 +17,10 @@ import { Role } from '~/lib/consts'
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `change_me_${name}`)
+import packageJson from '../../../package.json'
+export const createTable = pgTableCreator(
+  (name) => `${packageJson.name}_${name}`,
+)
 
 const dateColumns = {
   createdAt: timestamp('created_at', { withTimezone: true })
