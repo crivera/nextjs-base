@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import { SessionProvider } from 'next-auth/react'
 import localFont from 'next/font/local'
-import { Footer } from './_components/ui/common/Footer'
-import { Header } from './_components/ui/common/Header'
+import { Footer } from './components/ui/common/Footer'
+import { Header } from './components/ui/common/Header'
 import NextTopLoader from 'nextjs-toploader'
-
+import '../lib/orpc.server'
 import './globals.css'
 
 const geistSans = localFont({

@@ -1,58 +1,85 @@
-import { createServerActionProcedure, ZSAError } from 'zsa'
 import { Role, SYSTEM_ROBOT } from '~/lib/consts'
 import { auth } from '../authentication'
 
+import { os } from '@orpc/server'
+import { headers } from 'next/headers'
 import { env } from '~/env'
 import userStore from '../db/user-store'
 
-export const authedActionClient = createServerActionProcedure().handler(
-  async () => {
+const base = os.errors({
+  UNAUTHORIZED: {},
+  FORBIDDEN: {},
+})
+
+export const authedActionClient = base.middleware(
+  async ({ context, next, errors }) => {
     const session = await auth()
     if (!session || !session.user?.id) {
-      throw new ZSAError('FORBIDDEN', 'Session not found!')
+      throw errors.UNAUTHORIZED({
+        message: 'Session not found!',
+      })
     }
 
     const dbUser = await userStore.getUserById(session.user.id)
 
     if (!dbUser) {
-      throw new ZSAError('FORBIDDEN', 'User not found.')
+      throw errors.FORBIDDEN({
+        message: 'User not found.',
+      })
     }
 
-    // Return the next middleware with `userId` value in the context
-    return { user: dbUser }
+    const result = await next({
+      context: {
+        user: dbUser,
+      },
+    })
+
+    return result
   },
 )
 
-export const adminActionClient = createServerActionProcedure(
-  authedActionClient,
-).handler(async ({ ctx }) => {
-  if (ctx.user.role < Role.ADMIN) {
-    throw new ZSAError(
-      'FORBIDDEN',
-      'Insufficient permissions. Admin access required.',
-    )
-  }
-})
+export const adminActionClient = base
+  .use(authedActionClient)
+  .use(async ({ context, next, errors }) => {
+    if (context.user.role < Role.ADMIN) {
+      throw errors.FORBIDDEN({
+        message: 'Insufficient permissions. Admin access required.',
+      })
+    }
 
-export const systemActionClient = createServerActionProcedure().handler(
-  async ({ request }) => {
+    return next({
+      context: {
+        user: context.user,
+      },
+    })
+  })
+
+export const systemActionClient = base.use(
+  async ({ context, next, errors }) => {
+    const allHeaders = await headers()
     const authHeader =
-      request?.headers?.get('Authorization') ||
-      request?.headers?.get('authorization')
+      allHeaders.get('Authorization') || allHeaders.get('authorization')
+
     if (!authHeader) {
-      throw new ZSAError('FORBIDDEN', 'Auth header required.')
+      throw errors.FORBIDDEN({
+        message: 'Auth header required.',
+      })
     }
 
     const parts = authHeader.split(' ')
     if (parts.length === 2 && parts[0] === 'Bearer') {
       const token = parts[1]
       if (token === env.SYSTEM_KEY) {
-        return {
-          user: SYSTEM_ROBOT,
-        }
+        return next({
+          context: {
+            user: SYSTEM_ROBOT,
+          },
+        })
       }
     }
 
-    throw new ZSAError('FORBIDDEN', 'Bad Header.')
+    throw errors.FORBIDDEN({
+      message: 'Bad key.',
+    })
   },
 )

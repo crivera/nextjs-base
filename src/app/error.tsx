@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import GenericError from "./_components/ui/common/Error";
+import GenericError from './components/ui/common/Error'
 
 export default function ErrorPage() {
-	return <GenericError />;
+  return <GenericError />
 }
